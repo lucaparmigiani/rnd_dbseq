@@ -1,3 +1,4 @@
 rnd_dbseq
 **/data/*
 **/test/*
+**/__pycache__/*

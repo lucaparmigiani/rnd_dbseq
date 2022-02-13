@@ -1,4 +1,5 @@
 #pragma once
+//https://en.wikipedia.org/wiki/Disjoint-set_data_structure
 
 struct UnionFind {
     int *parent;
