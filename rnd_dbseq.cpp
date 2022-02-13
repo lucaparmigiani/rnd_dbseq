@@ -14,7 +14,7 @@ int *cycle;
 bool *bwt_enc;
 
 //--------------------------------------------------------------------------------
-// Random standard permutation of a bwt_enc of a dB set
+// Random bitstring representing the encoded bwt
 //--------------------------------------------------------------------------------
 void rnd_bistr(){
     for (size_t i = 0; i < m; i++)  bwt_enc[i] = rand() % 2;
