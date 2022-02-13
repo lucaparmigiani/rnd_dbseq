@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "unionfind.h"
+#include "unionfind.hpp"
 
 using namespace std;
 
