@@ -82,7 +82,7 @@ void rnd_debruijn() {
         ll e = edges[j];
         edges[j] = edges[i];
         edges[i] = e;
-        // If the edge can be added to the ST swap is applied to perm
+        // If the edge can be added to the ST do it by toggling the bit in position e/2
         if (ST.Union(cycle[e], cycle[e+1])) {
             bwt_enc[e/2]=!bwt_enc[e/2];
             num_cycles--;
