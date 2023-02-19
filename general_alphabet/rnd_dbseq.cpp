@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
-#include <cstdint>
+#include <stdint.h>
 #include <cmath>
 #include <vector>
 #include "unionfind.hpp"

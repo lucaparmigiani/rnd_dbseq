@@ -125,7 +125,7 @@ void rnd_debruijn() {
             }
         }
         edges_weight.swap_with_last(j, edges[j].size(), edges[edges_weight.n-1].size());
-        Vec<Edge<ll>> e = edges[j];
+        Vec< Edge<ll> > e = edges[j];
         edges[j] = edges[edges_weight.n];
         edges[edges_weight.n] = e;
     }
