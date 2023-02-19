@@ -1,11 +1,10 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
-#include "unionfind.hpp"
+#include<iostream>
+#include<vector>
+#include"unionfind.hpp"
 
 using namespace std;
 
-#define ll long long int
+#define ll unsigned long long int
 
 int k;
 ll m, n;
@@ -17,29 +16,24 @@ bool *bwt_enc;
 // Random bitstring representing the encoded bwt
 //--------------------------------------------------------------------------------
 void rnd_bistr(){
-    for (size_t i = 0; i < m; i++)  bwt_enc[i] = rand() % 2;
+    bwt_enc[0] = bwt_enc[m-1] = 1;
+    for (size_t i = 1; i < m-1; i++)  bwt_enc[i] = rand() % 2;
 }
 
 //--------------------------------------------------------------------------------
 // Assign cycle to the permutation of the bwt_enc of a dB set
 //--------------------------------------------------------------------------------
 void bwt2cycle() {
-    bool *checked = new bool[n]();
-    
     ll i = 0;
-    num_cycles = 0;
+    num_cycles = 1;
     while (i < n) {
-        while (!checked[i]) {
-            checked[i] = 1;
+        while (!cycle[i]) {
             cycle[i] = num_cycles;
             i = i/2 + (bwt_enc[i/2] ^ (i%2))*m;
         }
         i++;
-        if (i<n && !checked[i]) num_cycles++;
+        if (i<n && !cycle[i]) num_cycles++;
     }
-    num_cycles++;
-
-    delete [] checked;
 }
 
 //--------------------------------------------------------------------------------
@@ -48,8 +42,8 @@ void bwt2cycle() {
 void inv_bwt() {
     ll i = 0;
     do {
-        //printf("%d", bwt_enc[i/2]^int(i%2)); // dbseq with numbers {0,1}
-        printf("%c", 'a'+(bwt_enc[i/2]^int(i%2))); // dbseq with letters {a,b}
+        printf("%d", bwt_enc[i/2]^int(i%2)); // dbseq with numbers {0,1}
+        //printf("%c", 'a'+(bwt_enc[i/2]^int(i%2))); // dbseq with letters {a,b}
         i = i/2 + (bwt_enc[i/2] ^ (i%2)) * m;
     } while(i != 0);
     printf("\n");
@@ -76,18 +70,17 @@ void rnd_debruijn() {
     UnionFind ST = UnionFind(num_cycles);
     int num_edges = edges.size();
 
-    int i = 0;
     while (num_cycles > 1) {
-        int j = (rand() % (num_edges - i)) + i;
+        int j = rand() % num_edges--;
+
         ll e = edges[j];
-        edges[j] = edges[i];
-        edges[i] = e;
+        edges[j] = edges[num_edges];
+        edges[num_edges] = e;
         // If the edge can be added to the ST do it by toggling the bit in position e/2
         if (ST.Union(cycle[e], cycle[e+1])) {
             bwt_enc[e/2]=!bwt_enc[e/2];
             num_cycles--;
         }
-        i++;
     }
 
     delete [] cycle;
@@ -107,14 +100,16 @@ int main(int argc, char **argv) {
         k = 4;
     }
 
-    m = pow(2, k-1);
+    //while(1) {
+    m = 1<<(k-1);
     n = m*2;
     bwt_enc = new bool[m];
-    cycle = new int[n];
+    cycle = new int[n]();
 
     rnd_debruijn();
 
     delete [] bwt_enc;
+    //}
  
     return 0;
 }

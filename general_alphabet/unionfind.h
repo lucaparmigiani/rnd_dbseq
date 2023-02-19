@@ -1,5 +1,10 @@
 #pragma once
-//https://en.wikipedia.org/wiki/Disjoint-set_data_structure
+
+template<class T>
+struct Edge {
+    T u;
+    T v;
+};
 
 struct UnionFind {
     int *parent;
@@ -20,8 +25,8 @@ struct UnionFind {
     }
 
     bool Union(int u, int v) {
-        int x = Find(u);
-        int y = Find(v);
+        int x = Find(u-1);
+        int y = Find(v-1);
 
         if (x == y) return false;
 

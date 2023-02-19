@@ -1,8 +1,10 @@
 import random 
+import sys
 from itertools import product
-from unionFind import UnionFind
+from unionfind import UnionFind
 
-Sig = ['a','b']
+Sig = ['0','1']
+#Sig = ['a','b']
 
 #--------------------------------------------------------------------------------
 # Random bitstring representing the encoded bwt
@@ -17,19 +19,17 @@ def rnd_bitstr(m):
 # Assign cycle to the permutation of the bwt_enc of a dB set
 #--------------------------------------------------------------------------------
 def bwt2cycle(bwt_enc, n, m):
-    checked = [False]*n
     cycle = [0]*n
 
     i = 0
-    num_cycles = 0
+    num_cycles = 1
     while i < n:
-        while not checked[i]:
-            checked[i] = True
+        while cycle[i] == 0:
             cycle[i] = num_cycles
             i = i//2 + (bwt_enc[i//2] ^ (i%2))*m
         i+=1
-        if i<n and not checked[i]: num_cycles+=1
-    num_cycles+=1
+        if i<n and cycle[i]==0: num_cycles+=1
+
     return [cycle, num_cycles]
 
 #--------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ def inv_bwt(bwt_enc, m):
     dbseq = Sig[bwt_enc[i]]
     i = bwt_enc[0]*m
     while i != 0:
-        dbseq += Sig[bwt_enc[i//2]^i%2]
+        dbseq += Sig[bwt_enc[i//2]^i%2]  # print db seq with {a,b}
         i = i//2 + (bwt_enc[i//2]^(i%2))*m
     return dbseq
 
@@ -77,7 +77,7 @@ def rnd_debruijn(k):
     return inv_bwt(bwt_enc, m)
 
 #--------------------------------------------------------------------------------
-# Utility, sanity check for de Bruijn sequence
+# Check for de Bruijn sequence
 #--------------------------------------------------------------------------------
 def is_debruijn(s, Sig, k):
     d = dict()
@@ -106,15 +106,14 @@ def is_debruijn(s, Sig, k):
 # MAIN
 #--------------------------------------------------------------------------------
 def main():
-    k = 6
     #random.seed(1479)
-    for i in range(100000):
-        dbseq = rnd_debruijn(k)
-        if is_debruijn(dbseq, Sig, k):
-            print(dbseq)
-        else:
-            print("dbseq_set:", dbseq)
-            print("ERROR")
+    if len(sys.argv) > 1:
+        k = int(sys.argv[1])
+    else:
+        k = 6
+    dbseq = rnd_debruijn(k)
+    print(dbseq)
+    #print(is_debruijn(dbseq, Sig, k))
 
 if __name__ == "__main__":
     main()
