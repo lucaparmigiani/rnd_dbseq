@@ -1,8 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
-#include <stdint.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstdio>
+#include <ctime>
+#include <cstdint>
+#include <cmath>
 #include <vector>
 #include "unionfind.hpp"
 
@@ -11,8 +11,7 @@
 int k, sig;
 ll n, m;
 int num_cycles;
-int *cycle;
-int *bwt;
+uint32_t *cycle, *bwt;
 
 //--------------------------------------------------------------------------------
 // Utils
@@ -24,9 +23,9 @@ void swap(T *A, int i, int j){
     A[j] = tmp;
 }
 
-void shuffle(int *A, int start, int end){
-    for (int i=start; i<end; i++){
-        int j = (rand() % (end-start)) + (start);
+void shuffle(uint32_t *A, int start, int end){
+    for (size_t i=start; i<end; i++){
+        size_t j = (rand() % (end-start)) + (start);
         swap(A, i, j);
     }
 }
@@ -135,8 +134,8 @@ int main(int argc, char **argv) {
     m = pow(sig, k-1);
     n = m*sig;
 
-    bwt = new int[n];
-    cycle = new int[n]();
+    bwt = new uint32_t[n];
+    cycle = new uint32_t[n]();
 
     rnd_debruijn();
 
