@@ -131,7 +131,6 @@ def main():
     else:
         sig = 4
         k = 5
-
     #Sig = [ascii_lowercase[i] for i in range(sig)]
     Sig = [str(i) for i in range(sig)]
 

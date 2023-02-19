@@ -11,13 +11,9 @@ class UnionFind:
     def union(self, u, v):
         x = self.find(u-1)
         y = self.find(v-1)
-
         if x == y: return False
-
         if self.rank[x] > self.rank[y]: self.parent[x] = y
         elif self.rank[y] > self.rank[x]: self.parent[y] = x
-        # If ranks are same, then make one as
-        # root and increment its rank by one
         else:
             self.parent[y] = x
             self.rank[x] += 1
