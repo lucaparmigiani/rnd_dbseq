@@ -1,7 +1,10 @@
-#include<iostream>
-#include <cmath>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#include <stdint.h>
+#include <math.h>
 #include <vector>
-#include "unionfind.h"
+#include "unionfind.hpp"
 
 #define ll unsigned long long int
 
@@ -22,7 +25,7 @@ void swap(T *A, int i, int j){
 }
 
 void shuffle(int *A, int start, int end){
-    for (size_t i=start; i<end; i++){
+    for (int i=start; i<end; i++){
         int j = (rand() % (end-start)) + (start);
         swap(A, i, j);
     }
@@ -98,7 +101,7 @@ void rnd_debruijn() {
     ll num_edges = edges.size();
 
     while (num_cycles > 1) {
-        int j = rand() % num_edges--;
+        size_t j = rand() % num_edges--;
 
         Edge<ll> e = edges[j];
         edges[j] = edges[num_edges];

@@ -19,7 +19,7 @@ g++ -O2 rnd_dbseq.cpp -o rnd_dbseq
 Generate a random de Bruijn sequence of order 5.
 
 ```bash
-./rnd_dbseq 5
+rnd_dbseq 5
 ```
 
 #### Python 
@@ -43,5 +43,5 @@ g++ -O2 rnd_dbseq.cpp -o rnd_dbseq
 
 Generate a random de Bruijn sequence of alphabet (sigma) 4 of order 5.
 ```bash
-./rnd_dbseq 4 5
+rnd_dbseq 4 5
 ```
