@@ -1,6 +1,7 @@
 # `rnd_dbseq` - Random de Bruijn sequence
 
-Implementation in C++ and python for random de Bruijn sequences of any alphabet.
+Implementation in C++ and python for the generation of random de Bruijn
+sequences of any alphabet.
 
 ## Binary alphabet
 
