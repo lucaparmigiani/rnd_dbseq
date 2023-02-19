@@ -1,4 +1,6 @@
-#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
 #include<vector>
 #include"unionfind.hpp"
 
@@ -100,7 +102,6 @@ int main(int argc, char **argv) {
         k = 4;
     }
 
-    //while(1) {
     m = 1<<(k-1);
     n = m*2;
     bwt_enc = new bool[m];
@@ -109,7 +110,6 @@ int main(int argc, char **argv) {
     rnd_debruijn();
 
     delete [] bwt_enc;
-    //}
  
     return 0;
 }
