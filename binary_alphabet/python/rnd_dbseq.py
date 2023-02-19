@@ -63,17 +63,18 @@ def rnd_debruijn(k):
     ST = UnionFind(num_cycles)
     num_edges = len(edges)
 
-    i = 0
     while num_cycles > 1:
-        j = random.randint(i,num_edges-1)
+        j = random.randint(0, num_edges-1)
+        num_edges -= 1
+
         e = edges[j]
-        edges[j]= edges[i]
-        edges[i] = e
+        edges[j]= edges[num_edges]
+        edges[num_edges] = e
 
         if ST.union(cycle[e], cycle[e+1]):
             bwt_enc[e//2] = not bwt_enc[e//2]
             num_cycles-=1
-        i+=1
+
     return inv_bwt(bwt_enc, m)
 
 #--------------------------------------------------------------------------------
@@ -107,7 +108,7 @@ def is_debruijn(s, Sig, k):
 #--------------------------------------------------------------------------------
 def main():
     #random.seed(1479)
-    if len(sys.argv) > 1:
+    if len(sys.argv) >= 2:
         k = int(sys.argv[1])
     else:
         k = 6

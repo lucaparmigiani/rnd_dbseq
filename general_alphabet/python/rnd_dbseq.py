@@ -1,84 +1,102 @@
-import random 
 import sys
+import random 
 from itertools import product
-from unionFind import UnionFind
+from unionfind import UnionFind
+from string import ascii_lowercase
 
-Sig = ['a','b']
+#--------------------------------------------------------------------------------
+# Util
+#--------------------------------------------------------------------------------
+def swap(A, i, j):
+    tmp = A[i]
+    A[i] = A[j];
+    A[j] = tmp
+
+def shuffle(A, start, end):
+    for i in range(start, end):
+        j = random.randint(start, end-1)
+        swap(A, i, j);
 
 #--------------------------------------------------------------------------------
 # Random bitstring representing the encoded bwt
 #--------------------------------------------------------------------------------
-def rnd_bitstr(m):
-    bwt_enc = [0]*m
-    for i in range(m):
-        bwt_enc[i] = random.randint(0,1)
-    return bwt_enc
+def rnd_bwt(sig, n):
+    bwt = [0]*n
+    for i in range(0, n, sig):
+        for j in range(sig):
+            bwt[i+j] = j
+    for i in range(0, n, sig): shuffle(bwt, i, i+sig)
+    return bwt
 
 #--------------------------------------------------------------------------------
-# Assign cycle to the permutation of the bwt_enc of a dB set
+# Assign cycle to the permutation of the bwt of a dB set
 #--------------------------------------------------------------------------------
-def bwt2cycle(bwt_enc, n, m):
+def bwt2cycle(bwt, sig, n, m):
     cycle = [0]*n
 
     i = 0
     num_cycles = 1
     while i < n:
-        while cycle[i] == 0:
+        while cycle[i]==0:
             cycle[i] = num_cycles
-            i = i//2 + (bwt_enc[i//2] ^ (i%2))*m
+            i = i//sig + (bwt[i])*m
         i+=1
-        if i<n and cycle[i]==0: num_cycles+=1
+        if i < n and cycle[i]==0: num_cycles+=1
 
     return [cycle, num_cycles]
 
 #--------------------------------------------------------------------------------
-# Return the inverse of the bwt_enc of de Bruijn sequence
+# Return the inverse of the bwt of de Bruijn sequence
 #--------------------------------------------------------------------------------
-def inv_bwt(bwt_enc, m):
+def inv_bwt(bwt, Sig, sig, m):
     i = 0
-    #dbseq = Sig[bwt_enc[i]]  # print db seq with {a,b}
-    dbseq = str(bwt_enc[i])   # print db seq with {0,1}
-    i = bwt_enc[0]*m
+    dbseq = Sig[bwt[i]]
+    i = bwt[0]*m
     while i != 0:
-        #dbseq += Sig[bwt_enc[i//2]^i%2]  # print db seq with {a,b}
-        dbseq += str(bwt_enc[i//2]^i%2)  # print db seq with {0,1}
-        i = i//2 + (bwt_enc[i//2]^(i%2))*m
+        dbseq += Sig[bwt[i]]
+        i = i//sig + (bwt[i])*m
     return dbseq
 
 #--------------------------------------------------------------------------------
 # Generate a random binary de Bruijn sequence of order k
 #--------------------------------------------------------------------------------
-def rnd_debruijn(k):
-    m = 2**(k-1)
-    n = m*2
-    bwt_enc = rnd_bitstr(m)
-    [cycle, num_cycles] = bwt2cycle(bwt_enc, n, m)
+def rnd_debruijn(Sig, k):
+    sig = len(Sig)
+    m = sig**(k-1)
+    n = m*sig
+    bwt = rnd_bwt(sig, n)
+    [cycle, num_cycles] = bwt2cycle(bwt, sig, n, m)
     
     if num_cycles == 1: 
-        return inv_bwt(bwt_enc, m)
+        return inv_bwt(bwt, Sig, sig, m)
 
     edges = []
-    for i in range(0,n,2):
-        if cycle[i] != cycle[i+1]: edges.append(i)
+    for i in range(0,n,sig):
+        for j in range(i+1, i+sig):
+            C1 = cycle[j]
+            for z in range(i, j):
+                C2 = cycle[z]
+                if C1 != C2: edges.append([j,z])
 
     ST = UnionFind(num_cycles)
     num_edges = len(edges)
 
-    i = 0
     while num_cycles > 1:
-        j = random.randint(i,num_edges-1)
-        e = edges[j]
-        edges[j]= edges[i]
-        edges[i] = e
+        j = random.randint(0, num_edges-1)
+        num_edges -= 1
 
-        if ST.union(cycle[e], cycle[e+1]):
-            bwt_enc[e//2] = not bwt_enc[e//2]
+        e = edges[j]
+        edges[j]= edges[num_edges]
+        edges[num_edges] = e
+
+        if ST.union(cycle[e[0]], cycle[e[1]]):
+            swap(bwt, e[0], e[1])
             num_cycles-=1
-        i+=1
-    return inv_bwt(bwt_enc, m)
+
+    return inv_bwt(bwt, Sig, sig, m)
 
 #--------------------------------------------------------------------------------
-# Check for de Bruijn sequence
+# Utility, sanity check for de Bruijn sequence
 #--------------------------------------------------------------------------------
 def is_debruijn(s, Sig, k):
     d = dict()
@@ -107,12 +125,17 @@ def is_debruijn(s, Sig, k):
 # MAIN
 #--------------------------------------------------------------------------------
 def main():
-    #random.seed(1479)
-    if len(sys.argv) > 1:
-        k = int(sys.argv[1])
+    if len(sys.argv) >= 3:
+        sig = int(sys.argv[1])
+        k = int(sys.argv[2])
     else:
-        k = 6
-    dbseq = rnd_debruijn(k)
+        sig = 4
+        k = 5
+
+    #Sig = [ascii_lowercase[i] for i in range(sig)]
+    Sig = [str(i) for i in range(sig)]
+
+    dbseq = rnd_debruijn(Sig, k)
     print(dbseq)
     #print(is_debruijn(dbseq, Sig, k))
 

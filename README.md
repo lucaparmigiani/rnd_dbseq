@@ -45,3 +45,11 @@ Generate a random de Bruijn sequence of alphabet (sigma) 4 of order 5.
 ```bash
 rnd_dbseq 4 5
 ```
+
+#### Python 
+
+```bash
+cd general_alphabet/python
+python rnd_dbseq.py 4 5
+```
+
