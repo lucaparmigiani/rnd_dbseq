@@ -2,10 +2,11 @@
 #include<cstdlib>
 #include<ctime>
 #include<vector>
+#include<string.h>
 #include<cmath>
 #include"unionfind.hpp"
 #include"fenwicktree.hpp"
-#include "vec.hpp"
+#include"vec.hpp"
 
 #define ll long long int
 
@@ -14,6 +15,7 @@ ll n, m;
 int num_cycles;
 int *cycle;
 int *bwt;
+const char *alphabet = NULL;
 
 //--------------------------------------------------------------------------------
 // Utils
@@ -66,10 +68,13 @@ void bwt2cycle() {
 //--------------------------------------------------------------------------------
 void inv_bwt() {
     ll i = 0;
-    //char DNA[4] {'A', 'C', 'G', 'T'};
     do {
-        printf("%d", bwt[i]);
-        //printf("%c", DNA[bwt[i]]); //DNA
+        if (alphabet != NULL) printf("%c", alphabet[bwt[i]]);
+        else { 
+            printf("%d", bwt[i]);
+            if (sig > 10) printf(" ");
+        }
+
         i = i/sig + bwt[i]*m;
     } while(i != 0);
     printf("\n");
@@ -138,17 +143,43 @@ void rnd_debruijn() {
 //--------------------------------------------------------------------------------
 // MAIN
 //--------------------------------------------------------------------------------
+void show_help(){
+    printf("Usage: rnd_dbseq <sig> <k> [-a abc..]\n");
+    printf("Options:\n");
+    printf("  -h, --help        Show this help message and exit\n");
+    printf("  -a, --alph        Pass a string of length sig representing\n");
+    printf("                    the alphabet.\n");
+    printf("                    Example: rnd_dbseq 3 2 -a abc.\n");
+}
+
 int main(int argc, char **argv) {
     srand(time(NULL));
 
     if (argc > 1){
+        for (int i = 1; i < argc; i++) {
+            if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+                show_help();
+                exit(0);
+            }
+        }
         sig = atoi(argv[1]);
         k = atoi(argv[2]);
+        for (int i = 3; i < argc; i++) {
+            if (strcmp(argv[i], "-a") == 0 || strcmp(argv[i], "--alph") == 0) {
+                if (i+1 <= argc) {
+                    alphabet = argv[i+1];
+                    if (strlen(alphabet) < sig ) {
+                        printf("Error: alphabet cannot be smaller than sigma.\n");
+                        exit(1);
+                    }
+                }
+            }
+        }
     } else {
-        //sig = 52;
-        sig = 4;
-        k = 3;
+        show_help();
+        exit(0);
     }
+
 
     int i = 0;
     m = pow(sig, k-1);
