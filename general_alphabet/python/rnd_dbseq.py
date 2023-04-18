@@ -1,8 +1,23 @@
-import sys
+import argparse
 import random 
+import sys
 from itertools import product
 from unionfind import UnionFind
 from string import ascii_lowercase
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-a", "--alph", 
+            help="pass a string of length sig representing the alphabet.\
+                  example: rnd_dbseq 3 2 -a abc.")
+    parser.add_argument("sig", type=int, help="size of the alphabet")
+    parser.add_argument("k",   type=int, help="value for k")
+    args = parser.parse_args()
+    if args.alph is not None and len(args.alph) < args.sig:
+        raise parser.error('alphabet cannot be smaller than sigma.')
+    return args
+
+args = parse_args()
 
 #--------------------------------------------------------------------------------
 # Util
@@ -52,8 +67,10 @@ def inv_bwt(bwt, Sig, sig, m):
     i = 0
     dbseq = Sig[bwt[i]]
     i = bwt[0]*m
+    if args.alph is None and sig > 10: dbseq+=" "
     while i != 0:
         dbseq += Sig[bwt[i]]
+        if args.alph is None and sig > 10: dbseq+=" "
         i = i//sig + (bwt[i])*m
     return dbseq
 
@@ -124,15 +141,15 @@ def is_debruijn(s, Sig, k):
 #--------------------------------------------------------------------------------
 # MAIN
 #--------------------------------------------------------------------------------
+
 def main():
-    if len(sys.argv) >= 3:
-        sig = int(sys.argv[1])
-        k = int(sys.argv[2])
-    else:
-        sig = 4
-        k = 5
+    sig = args.sig
+    k = args.k
+    Sig = args.alph
+    if Sig == None:
+        Sig = [str(i) for i in range(sig)]
+
     #Sig = [ascii_lowercase[i] for i in range(sig)]
-    Sig = [str(i) for i in range(sig)]
 
     dbseq = rnd_debruijn(Sig, k)
     print(dbseq)
