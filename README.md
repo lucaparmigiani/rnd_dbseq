@@ -55,12 +55,26 @@ python rnd_dbseq.py 4 5
 
 # Authors
 
-### Theoretical results:
+### Theoretical results and implementation:
 
 * Zsuzsanna Lipták
 * Luca Parmigiani
 
-### Implementation and experiments:
+### Experiments:
 
-* Zsuzsanna Lipták
 * [Luca Parmigiani](https://github.com/lucaparmigiani)
+
+# References and citations
+
+[1] Zsuzsanna Lipták, Luca Parmigiani: A BWT-based algorithm for random de Bruijn sequence construction. Accepted for presentation at: 16th Latin American Theoretical Informatics Symposium (LATIN 2024), Puerto Varas, Chile, 18-22 March 2024. ([LATIN 2024](https://latin2024.cmm.uchile.cl/))
+
+
+```
+@inproceedings{LiptakP24,
+  author       = {{\relax Zs}uzsanna Lipt{\'{a}}k and Luca Parmigiani},
+  title        = {A {BWT}-based algorithm for random de {Bruijn} sequence construction},
+  booktitle    = {16th Latin American Theoretical Informatics Symposium (LATIN 2024)},
+  year         = {2024},
+}
+```
+
