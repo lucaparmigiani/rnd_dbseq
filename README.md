@@ -53,3 +53,14 @@ cd general_alphabet/python
 python rnd_dbseq.py 4 5
 ```
 
+# Authors
+
+### Theoretical results:
+
+* Zsuzsanna Lipták
+* Luca Parmigiani
+
+### Implementation and experiments:
+
+* Zsuzsanna Lipták
+* [Luca Parmigiani](https://github.com/lucaparmigiani)
