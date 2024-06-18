@@ -79,3 +79,7 @@ Please cite the following paper:
   year         = {2024},
 }
 ```
+
+### License
+
+This software is distributed under the [BSD3](https://opensource.org/license/bsd-3-clause), see LICENSE for more information.
