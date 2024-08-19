@@ -1,8 +1,6 @@
 # `rnd_dbseq` - Random de Bruijn sequence
 
-<video autoplay loop muted playsinline>
-  <source src="img/dbseqk4_matrix.webm" type="video/webm">
-</video>
+![dbseqk_k4](img/matrix_dbseqk4.gif)
 
 Implementation in C++ and python for the generation of random de Bruijn
 sequences of any alphabet.
